@@ -1,0 +1,103 @@
+{
+	"development": {
+		"iiif-server": {
+			"source": "/opt/iiif-node/images/sources",
+			"online": "/opt/iiif-node/images/online",
+			"cache": "/opt/iiif-node/images/cache",
+			"baseuri": "http://192.168.59.103:3000/iiif"
+		},
+		"client": "public/app",
+		"server": {
+			"bind": "0.0.0.0"
+		},
+		"logger": {
+			"module": "winston",
+			"config": {
+				"web": {
+					"file": { "level": "debug" },
+					"console": { "level": "debug", "colorize": true, "timestamp": true, "prettyPrint": true }
+				},
+				"modules": {
+					"file": { "level": "debug" },
+					"console": { "level": "debug", "colorize": true, "timestamp": true, "prettyPrint": true }
+				},
+				"main": {
+					"file": { "level": "debug" },
+					"console": { "level": "debug", "colorize": true, "timestamp": true, "prettyPrint": true }
+				}
+			}
+		}
+	},
+	"production": {
+	},
+	"defaults": {
+		"iiif-server": {
+			"profile": [
+				"http://iiif.io/api/image/2/level2.json",
+				    {
+				      "formats" : [ "gif", "jpg", "png" ],
+				      "qualities" : [ "color", "gray", "bitonal" ],
+				      "supports" : [
+						"baseUriRedirect",
+						"canonicalLinkHeader",
+						"cors",
+						"jsonldMediaType",
+						"mirroring",
+						"profileLinkHeader",
+						"regionByPct",
+						"regionByPx",
+						"rotationBy90s",
+						"sizeAboveFull",
+						"sizeByForcedWh",
+						"sizeByH",
+						"sizeByPct",
+						"sizeByW",
+						"sizeByWh"
+				      ]
+				    }
+			]
+		},
+		"client": "public/app",
+		"authentication": {
+			"username": "admin",
+			"password": "changeme"
+		},
+		"client": "public/app",
+		"server": {
+			"port": 3000
+		},
+		"logger": {
+			"module": "winston",
+			"config": {
+				"web": {
+					"file": {
+						"level": "info",
+						"filename": "logs/access.log",
+						"maxSize": 2048000,
+						"maxFiles": 5,
+						"tailable": true
+					}
+				},
+				"modules": {
+					"file": {
+						"level": "info",
+						"filename": "logs/modules.log",
+						"maxSize": 2048000,
+						"maxFiles": 5,
+						"tailable": true
+					}
+				},
+				"main": {
+					"file": {
+						"level": "info",
+						"filename": "logs/iiif-node.log",
+						"maxSize": 2048000,
+						"maxFiles": 5,
+						"tailable": true
+					}
+				}
+			}
+		}
+	}
+}
+
