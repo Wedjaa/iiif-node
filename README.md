@@ -8,7 +8,8 @@ The Docker image can be created by launching the `docker\build.sh` script includ
 
 You can run the docker container as follows:
 
-```docker run -e "DOCKER_HOST=$(ip -4 addr show eth0| grep -Po 'inet \K[\d.]+')"
+```
+docker run -e "DOCKER_HOST=$(ip -4 addr show eth0| grep -Po 'inet \K[\d.]+')"
  -v /images/src:/opt/images/sources \
  -v /images/online:/opt/images/online \
  -v /images/cache:/opt/images/cache \
