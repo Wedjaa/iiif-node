@@ -1,0 +1,70 @@
+#!/bin/bash
+
+## Prepare Debian
+
+echo Updating APT software information
+apt-get update > /dev/null
+
+echo Installing required software
+apt-get install -y wget python build-essential > /dev/null
+
+## Install Node
+mkdir /opt/node
+cd /opt/node
+echo Fetching Node 4.2.2
+wget -q --no-check-certificate https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-x64.tar.gz
+tar xf node-v4.2.2-linux-x64.tar.gz  --strip 1
+rm node-v4.2.2-linux-x64.tar.gz
+
+
+## Install some of the node basic things
+export PATH=$PATH:/opt/node/bin
+echo Installing Node Support Programs
+npm install -g express grunt-cli nodemon
+
+## Install Image Magick
+
+echo "Installing ImageMagick"
+mkdir /opt/imagemagick
+cd /opt/imagemagick/
+mkdir src
+cd src
+wget -q http://www.imagemagick.org/download/ImageMagick.tar.gz
+tar xf  ImageMagick.tar.gz --strip 1
+echo "Configuring"
+./configure --prefix=/opt/imagemagick > /dev/null
+echo "Compiling"
+make > /dev/null
+echo "Installing"
+make install > /dev/null
+
+### Install VIPS
+
+### Dependencies
+echo "Installing VIPS dependencies"
+apt-get install -y git-core autotools-dev automake gtk-doc-tools gobject-introspection libjpeg62-turbo gettext libxml2-dev libglib2.0-dev libtiff5-dev libexif-dev libgsf-1-dev libfftw3-dev liblcms2-dev libpng12-dev libpangoft2-1.0-0 libpango1.0-dev liborc-0.4-dev swig python python-dev > /dev/null
+
+### Point to our IM
+export PKG_CONFIG_PATH=/opt/imagemagick/lib/pkgconfig:${PKG_CONFIG_PATH}
+export PATH=/opt/imagemagick/bin:${PATH}
+
+mkdir /opt/vips
+cd /opt/vips
+echo "Cloning VIPS sources"
+git clone git://github.com/jcupitt/libvips.git src > /dev/null
+cd src
+echo "Bootstrapping"
+./bootstrap.sh > /dev/null
+echo "Configuring"
+CFLAGS="-O3" CXXFLAGS="-O3" ./configure --prefix=/opt/vips --disable-introspection > /dev/null
+echo "Building"
+make
+echo "Installing"
+make install
+
+### Clone our master
+cd /opt
+git clone https://github.com/Wedjaa/iiif-node.git srcs
+mv srcs/* application
+rm -rf srcs
+ 

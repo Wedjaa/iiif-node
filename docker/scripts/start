@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export PATH=/opt/node/bin:/opt/imagemagick/bin:/opt/vips/bin${PATH}
+export PKG_CONFIG_PATH=/opt/imagemagick/lib/pkgconfig:/opt/vips/lib/pkgconfig:${PKG_CONFIG_PATH}
+export PATH=/opt/imagemagick/bin:${PATH}
+export LD_LIBRARY_PATH=/opt/vips/lib:/opt/imagemagick/lib:/opt/node/lib:${LD_IMAGE_PATH}
+
+## Update app configuration
+perl -pi -e 's/(\"baseuri\":\W*\"http:\/\/)([^:]+):([^\/]+)\//\1$ENV{DOCKER_HOST}:$ENV{DOCKER_PORT}\//' config/iiif-node.json
+
+## Start the application
+
+cd /opt/application
+echo "Installing dependencies"
+npm install
+
+echo "Starting application"
+npm start
