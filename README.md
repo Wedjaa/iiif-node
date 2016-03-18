@@ -4,9 +4,23 @@ This is a NodeJS IIIF 2.0 Compliant Server, it requires some fiddling - as of th
 
 ## Prerequisites
 
-To successfully run this service you need the following packages installed:
+To successfully run this service you need the following packages - _these are Ubuntu dependencies, they may be different on your distribution_ - installed:
 
   - libmagick++-dev
+
+## Dependencies
+
+To install the dependencies you need to run 
+
+```
+npm install
+```
+
+If you are using Ubuntu make sure to change the PATH environment variable to include ImageMagick configuration binaries:
+
+```
+export PATH=/usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16:${PATH}
+```
 
 ## Using the docker image
 
