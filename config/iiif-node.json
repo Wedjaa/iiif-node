@@ -4,7 +4,7 @@
 			"source": "/opt/images/sources",
 			"online": "/opt/images/online",
 			"cache": "/opt/images/cache",
-			"baseuri": "http://172.17.0.2:3000/iiif"
+			"baseuri": "https://demo.us.wedjaa.net/iiif"
 		},
 		"client": "public/app",
 		"server": {
