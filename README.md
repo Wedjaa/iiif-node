@@ -2,6 +2,12 @@
 
 This is a NodeJS IIIF 2.0 Compliant Server, it requires some fiddling - as of this first release - to work correctly; namely it has a dependency on a modified version of the sharp library.
 
+## Prerequisites
+
+To successfully run this service you need the following packages installed:
+
+  - libmagick++-dev
+
 ## Using the docker image
 
 The Docker image can be created by launching the `docker\build.sh` script included. It will create an image named *iiif-node:latest*.
