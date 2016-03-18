@@ -28,14 +28,19 @@ IIIFServer.prototype = {
 	cacheTile: function(tile, params) {
 	},
 
-	getInfo: function(exportConfig, response) {
+	getInfo: function(exportConfig, request, response) {
 		var self = this;
 		logger.debug('Get Info: ' + JSON.stringify(exportConfig));
 		return this.getImage(exportConfig)
 			.metadata()
 			.then(function(data) {
+				var contentType = 'application/json';
+				if ( typeof request.headers.accept !== 'undefined'
+					&& request.headers.accept === 'application/ld+json' ) {
+					contentType = 'application/ld+json';
+				}
 				response.writeHead( 200, {
-					'Content-Type': 'application/json',
+					'Content-Type': contentType,
 					'Link': '<http://iiif.io/api/image/2/context.json>' +
 						'; rel="http://www.w3.org/ns/json-ld#context"' +
 						'; type="application/ld+json"',
@@ -59,9 +64,10 @@ IIIFServer.prototype = {
 			});
 	},
 
-	getTile: function(exportConfig, response) {
+	getTile: function(exportConfig, request, response) {
 		var self = this;
 		logger.debug('Export Tile: ' + JSON.stringify(exportConfig));
+		logger.debug('Headers: ' + JSON.stringify(request.headers));
 		return this.getImage(exportConfig)
 			.metadata()
 			.then(function(data) {
@@ -87,7 +93,7 @@ IIIFServer.prototype = {
                                         return;
                                 }
 				logger.debug('Rotator configured - ' + exportConfig.rotation);
-				self.exporter.transform(transformer, exportConfig, data, response);
+				self.exporter.transform(transformer, exportConfig, data, response, self.config);
 			})
 			.catch(function(err) {
 				logger.debug('Error serving image for "' + exportConfig.image + '": ' + err.message);

@@ -8,7 +8,7 @@ var Exporter = function() {
 }
 
 Exporter.prototype = {
-	transform: function(transformer, exportConfig, data, response) {
+	transform: function(transformer, exportConfig, data, response, config) {
 
 		var options = exportConfig.output.split('.');
 		logger.debug('Options: ' + options);
@@ -26,6 +26,9 @@ Exporter.prototype = {
 			case 'gray':
 				transformer.gamma().grayscale();
 				break;
+			case 'bitonal':
+				transformer.threshold(128);
+				break;
 			case 'default':
 			case 'color':
 				break;
@@ -36,6 +39,12 @@ Exporter.prototype = {
 				return;
 		}
 
+		// Write the canonical link to the image
+		response.setHeader('Link',  [
+			'<' + config.baseuri + exportConfig.url + '>;rel="canonical"',
+			'<' + config.profileLink + '>;rel="profile"'
+		]);
+
 		switch(format) {
 			case 'png':
 				response.setHeader('content-type', 'image/png');
@@ -44,10 +53,6 @@ Exporter.prototype = {
 			case 'jpg':
 				response.setHeader('content-type', 'image/jpeg');
 				transformer.toFormat('jpeg').pipe(response);
-				break;
-			case 'webp':
-				response.setHeader('content-type', 'image/webp');
-				transformer.toFormat('webp').pipe(response);
 				break;
 			case 'tiff':
 			case 'tif':
@@ -71,6 +76,12 @@ Exporter.prototype = {
                                 });
 				transformer.toFormat('png').pipe(imStream).pipe(response);
 				break;
+			/** There are currently disabled due to the ImageMagick support level **/
+			/**	
+			case 'webp':
+				response.setHeader('content-type', 'image/webp');
+				transformer.toFormat('webp').pipe(response);
+				break;
 			case 'jp2':
 				response.setHeader('content-type', 'image/jp2');
 				var imStream = imagemagick.streams.convert({
@@ -78,6 +89,7 @@ Exporter.prototype = {
                                 });
 				transformer.toFormat('png').pipe(imStream).pipe(response);
 				break;
+			**/
 			default:
 				logger.warn('Unsupported format: "' + format +'"');
 				response.writeHead(400);

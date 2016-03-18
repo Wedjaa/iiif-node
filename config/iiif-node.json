@@ -4,7 +4,7 @@
 			"source": "/opt/images/sources",
 			"online": "/opt/images/online",
 			"cache": "/opt/images/cache",
-			"baseuri": "http://172.17.0.2:3000/iiif"
+			"baseuri": "http://demo.us.wedjaa.net/iiif"
 		},
 		"client": "public/app",
 		"server": {
@@ -32,6 +32,7 @@
 	},
 	"defaults": {
 		"iiif-server": {
+			"profileLink": "http://iiif.io/api/image/2/level2.json",
 			"profile": [
 				"http://iiif.io/api/image/2/level2.json",
 				    {
