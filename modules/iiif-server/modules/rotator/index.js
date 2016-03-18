@@ -2,6 +2,7 @@
 
 var logger = require('../../../log')().get('modules');
 
+var supportedRotationAngles = [ 0, 90, 180, 270 ];
 var Rotator = function() {
 
 }
@@ -30,6 +31,11 @@ Rotator.prototype = {
 			rotationNum = parseInt(rotation);	
 		} catch(error) {
 			logger.warn('Failed to parse image rotation: ' + JSON.stringify(config));
+			return false;
+		}
+
+		if ( supportedRotationAngles.indexOf(rotationNum) < 0 ) {
+			logger.warn('Unsupported rotation angle: ' + rotationNum);
 			return false;
 		}
 

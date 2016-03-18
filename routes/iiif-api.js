@@ -12,7 +12,7 @@ module.exports = function(app, passport) {
 		var exportConfig = {
 			image: req.params['imagepath']
 		};
-		iiifServer.getInfo(exportConfig, res);
+		iiifServer.getInfo(exportConfig, req, res);
 	});
 
         router.get('/:imagepath', function(req, res) {
@@ -28,10 +28,11 @@ module.exports = function(app, passport) {
 			region: req.params['region'],
 			size: req.params['size'],
 			rotation: req.params['rotation'],
-			output: req.params['export']
+			output: req.params['export'],
+			url: req.url
 		};
 
-		iiifServer.getTile(exportConfig, res);
+		iiifServer.getTile(exportConfig, req, res);
         });
 
         return  router;
